@@ -71,7 +71,10 @@ function MyLspInstall()
   vim.cmd ':MasonInstall marksman markdownlint'
   vim.cmd ':MasonInstall json-lsp'
   vim.cmd ':MasonInstall prettier'
+  vim.cmd ':MasonInstall gh-actions-language-server'
+  vim.cmd ':MasonInstall terraform-ls'
 end
+require('lspconfig').gh_actions_ls.setup {}
 
 -- [[ Additional Plugins ]]
 
