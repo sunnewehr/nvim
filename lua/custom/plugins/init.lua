@@ -61,6 +61,12 @@ vim.keymap.set('v', 'gR', 'y<cmd>let @/=escape(@", \'/\')<cr>"_cgn', { desc = 'R
 
 -- [[ Languages ]]
 
+require('conform').formatters_by_ft.json = { 'prettier' }
+require('conform').formatters_by_ft.javascript = { 'prettier' }
+require('conform').formatters_by_ft.typescript = { 'prettier' }
+require('conform').formatters_by_ft.vue = { 'prettier' }
+require('conform').formatters_by_ft.yaml = { 'prettier' }
+
 -- Markdown
 vim.api.nvim_create_autocmd('FileType', {
   pattern = 'markdown',
@@ -78,7 +84,65 @@ function MyLspInstall()
   vim.cmd ':MasonInstall marksman markdownlint'
   vim.cmd ':MasonInstall json-lsp'
   vim.cmd ':MasonInstall prettier'
+  vim.cmd ':MasonInstall gh-actions-language-server'
+  vim.cmd ':MasonInstall terraform-ls'
+  vim.cmd ':MasonInstall vue-language-server'
+  vim.cmd ':MasonInstall yaml-language-server'
 end
+require('lspconfig').gh_actions_ls.setup {}
+-- https://dev.to/danwalsh/solved-vue-3-typescript-inlay-hint-support-in-neovim-53ej
+-- require('lspconfig').ts_ls.setup {
+--   filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
+--   init_options = {
+--     plugins = {
+--       {
+--         name = '@vue/typescript-plugin',
+--         location = vim.fn.stdpath 'data' .. '/mason/packages/vue-language-server/node_modules/@vue/language-server',
+--         languages = { 'vue' },
+--       },
+--     },
+--   },
+-- }
+require('lspconfig').volar.setup {
+  init_options = { vue = { hybridMode = false } },
+  settings = {
+    typescript = {
+      inlayHints = {
+        enumMemberValues = { enabled = true },
+        functionLikeReturnTypes = { enabled = true },
+        propertyDeclarationTypes = { enabled = true },
+        parameterTypes = { enabled = true, suppressWhenArgumentMatchesName = true },
+        variableTypes = { enabled = true },
+      },
+    },
+  },
+}
+require('lspconfig').ts_ls.setup {
+  init_options = {
+    plugins = {
+      {
+        name = '@vue/typescript-plugin',
+        location = vim.fn.stdpath 'data' .. '/mason/packages/vue-language-server/node_modules/@vue/language-server',
+        languages = { 'vue' },
+      },
+    },
+  },
+  settings = {
+    typescript = {
+      tsserver = { useSyntaxServer = false },
+      inlayHints = {
+        includeInlayParameterNameHints = 'all',
+        includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+        includeInlayFunctionParameterTypeHints = true,
+        includeInlayVariableTypeHints = true,
+        includeInlayVariableTypeHintsWhenTypeMatchesName = true,
+        includeInlayPropertyDeclarationTypeHints = true,
+        includeInlayFunctionLikeReturnTypeHints = true,
+        includeInlayEnumMemberValueHints = true,
+      },
+    },
+  },
+}
 
 -- [[ Additional Plugins ]]
 
