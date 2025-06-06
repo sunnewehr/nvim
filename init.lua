@@ -452,12 +452,6 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
-      -- Custom
-      vim.keymap.set('n', '<leader>f', builtin.find_files, { desc = 'Search [F]iles' })
-      vim.keymap.set('n', '<leader>r', function()
-        builtin.oldfiles { only_cwd = true }
-      end, { desc = '[R]ecent Files' })
-      vim.keymap.set('n', "<leader>'", builtin.resume, { desc = 'Search Resumse' })
 
       -- Slightly advanced example of overriding default behavior and theme
       vim.keymap.set('n', '<leader>/', function()
@@ -764,7 +758,7 @@ require('lazy').setup({
     cmd = { 'ConformInfo' },
     keys = {
       {
-        '<leader>F',
+        '<leader>f',
         function()
           require('conform').format { async = true, lsp_format = 'fallback' }
         end,
@@ -873,31 +867,6 @@ require('lazy').setup({
         -- By default, you may press `<c-space>` to show the documentation.
         -- Optionally, set `auto_show = true` to show the documentation after a delay.
         documentation = { auto_show = false, auto_show_delay_ms = 500 },
-        -- https://cmp.saghen.dev/recipes#mini-icons
-        menu = {
-          draw = {
-            components = {
-              kind_icon = {
-                text = function(ctx)
-                  local kind_icon, _, _ = require('mini.icons').get('lsp', ctx.kind)
-                  return kind_icon
-                end,
-                -- (optional) use highlights from mini.icons
-                highlight = function(ctx)
-                  local _, hl, _ = require('mini.icons').get('lsp', ctx.kind)
-                  return hl
-                end,
-              },
-              kind = {
-                -- (optional) use highlights from mini.icons
-                highlight = function(ctx)
-                  local _, hl, _ = require('mini.icons').get('lsp', ctx.kind)
-                  return hl
-                end,
-              },
-            },
-          },
-        },
       },
 
       sources = {
@@ -928,7 +897,7 @@ require('lazy').setup({
     -- change the command in the config to whatever the name of that colorscheme is.
     --
     -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-    'bluz71/vim-moonfly-colors',
+    'catppuccin/nvim',
     priority = 1000, -- Make sure to load this before all the other start plugins.
     config = function()
       ---@diagnostic disable-next-line: missing-fields
@@ -941,11 +910,7 @@ require('lazy').setup({
       -- Load the colorscheme here.
       -- Like many other themes, this one has different styles, and you could load
       -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.g.moonflyItalics = false
-      vim.cmd.colorscheme 'moonfly'
-      -- Make visual selections more visible
-      vim.cmd.highlight 'Visual guibg=#555555'
-      vim.cmd.highlight 'Visual guifg=#ffffff'
+      vim.cmd.colorscheme 'catppuccin-frappe'
     end,
   },
 
@@ -987,11 +952,6 @@ require('lazy').setup({
 
       -- ... and there is more!
       --  Check out: https://github.com/echasnovski/mini.nvim
-      require('mini.files').setup()
-      vim.keymap.set('n', '<leader>se', MiniFiles.open, { desc = '[S]earch File [E]xplorer' })
-      require('mini.icons').setup()
-      MiniIcons.mock_nvim_web_devicons()
-      MiniIcons.tweak_lsp_kind()
     end,
   },
   { -- Highlight, edit, and navigate code
